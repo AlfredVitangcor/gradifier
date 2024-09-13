@@ -46,6 +46,23 @@ export default function Homepage() {
     }
   }
 
+  async function handleDownload() {
+    if (!qr) {
+      alert("Generate QR first");
+      return;
+    }
+
+    const link = document.createElement("a");
+    link.href = qr;
+    link.download = "QR Code";
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  }
+
   return (
     <div className="h-screen w-screen pattern grid items-center">
       <div className="mx-auto max-w-90 bg-white p-4 rounded-md">
@@ -53,11 +70,21 @@ export default function Homepage() {
           {loading ? (
             <h2>loading...</h2>
           ) : (
-            <img
-              src={qr}
-              alt="qr image"
-              className="outline outline-1 mx-auto min-w-40 aspect-square bg-gray-300"
-            />
+            <>
+              <img
+                src={qr}
+                alt="qr image"
+                className="outline outline-1 mx-auto min-w-40 aspect-square bg-gray-300"
+              />
+              <div className="flex justify-center mt-2">
+                <button
+                  onClick={handleDownload}
+                  className="bg-blue-400 p-1 rounded-md"
+                >
+                  download
+                </button>
+              </div>
+            </>
           )}
         </div>
 
